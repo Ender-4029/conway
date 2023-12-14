@@ -5,7 +5,9 @@
 
 int simulationBoundX, simulationBoundY;
 bool **simulationBoard;
+bool **newSimBoard;
 long iterationCount = 0;
+
 
 int initalizeSimulation(int y, int x) {
   simulationBoundX = x;
@@ -13,6 +15,11 @@ int initalizeSimulation(int y, int x) {
   simulationBoard = (bool **)malloc(x * sizeof(bool *));
   for (int i = 0; i < x; i++) {
     simulationBoard[i] = (bool *)malloc(y * sizeof(bool));
+  }
+
+  newSimBoard = (bool **)malloc(simulationBoundX * sizeof(bool *));
+  for (int i = 0; i < simulationBoundX; i++) {
+    newSimBoard[i] = (bool *)malloc(simulationBoundY * sizeof(bool));
   }
 
   for (int i = 0; i < x; i++)
@@ -23,10 +30,10 @@ int initalizeSimulation(int y, int x) {
 
 void iterateSimulation() {
   iterationCount += 1;
-  bool **newSimBoard = (bool **)malloc(simulationBoundX * sizeof(bool *));
-  for (int i = 0; i < simulationBoundX; i++) {
-    newSimBoard[i] = (bool *)malloc(simulationBoundY * sizeof(bool));
-  }
+
+  for (int i = 0; i < simulationBoundX; i++)
+    for (int j = 0; j < simulationBoundY; j++)
+      newSimBoard[i][j] = false;
   //
   for (int i = 0; i < simulationBoundX; i++) {
     for (int j = 0; j < simulationBoundY; j++) {
@@ -49,10 +56,6 @@ void iterateSimulation() {
       simulationBoard[i][j] = newSimBoard[i][j];
     }
   }
-  for (int i = 0; i < simulationBoundX; i++) {
-    free(newSimBoard[i]);
-  }
-  free(newSimBoard);
 }
 
 int countCell(int x, int y) {
@@ -90,6 +93,10 @@ bool accessCellWrap(int x, int y) {
 void setCell(int x, int y, bool life) { simulationBoard[x][y] = life; }
 
 int freeGame() {
+  for (int i = 0; i < simulationBoundX; i++) {
+    free(newSimBoard[i]);
+  }
+  free(newSimBoard);
   for (int i = 0; i < simulationBoundX; i++) {
     free(simulationBoard[i]);
   }

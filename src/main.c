@@ -20,7 +20,7 @@ int drawBottomBar() {
     addch(ACS_BLOCK);
   }
   refresh();
-  move(y-1, 0);
+  move(y - 1, 0);
   printw("Iteration Count: %ld", iterationCount);
 
   return 0;
@@ -39,23 +39,24 @@ int shiftCursor(int row, int col) {
 // Wrapped cursor function to handle cursor movement within simulation bounds,
 // assumes row and column are [-1, 1]
 void shiftCursorSim(int row, int col) {
-  int xMax, yMax, x, y;
-  getmaxyx(stdscr, yMax, xMax);
-  yMax -= 2;
+  int rowMax, colMax, x, y;
+  getmaxyx(stdscr, colMax, rowMax);
   getyx(stdscr, y, x);
-  if (y + row > yMax) {
-    y = 0;
+  row += y;
+  col += x;
+  if (row < 0) {
+    row = colMax - 3;
+  } else if (col < 0) {
+    col = rowMax - 1;
+  } else if (col >= rowMax) {
+    col = 0;
   }
-  if (y + row < 0) {
-    y = yMax;
+
+  else if (row >= colMax - 2) {
+    row = 0;
   }
-  if (x + col > xMax) {
-    x = 0;
-  }
-  if (x + col < 0) {
-    x = xMax;
-  }
-  move(y + row, x + col);
+
+  move(row, col);
 }
 
 int drawGame() {
@@ -90,15 +91,16 @@ void setCursorCell() {
 
 int main() {
   /*WINDOW *simulationWindow =*/initscr();
-
+  bool simActive = false;
   printw("Hello");
   cbreak();
   noecho();
+  halfdelay(1);
   keypad(stdscr, TRUE);
   curs_set(1);
   int xMax, yMax;
   getmaxyx(stdscr, yMax, xMax);
-  initalizeSimulation(xMax, yMax);
+  initalizeSimulation(xMax, yMax - 2);
   drawGame();
   while (true) {
     switch (getch()) {
@@ -127,9 +129,12 @@ int main() {
       break;
     case KEY_ENTER:
     case '\n':
-        iterateSimulation();
-        drawGame();
+        simActive = !simActive;
       break;
+    }
+    if (simActive) {
+      iterateSimulation();
+      drawGame();
     }
   }
   endProgram();

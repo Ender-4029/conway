@@ -1,4 +1,4 @@
-CFLAGS = -Wall -Wextra -std=c11 -g
+CFLAGS = -Wall -Wextra -std=c11 -o3
 LDFLAGS = -lncurses
 SRC = src/main.c src/game.c
 OBJ = $(SRC:.c=.o)

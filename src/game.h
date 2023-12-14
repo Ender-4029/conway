@@ -9,6 +9,7 @@ enum life { dead, alive };
 // While conway's game of life is a endless simulation, we will loop the bounds
 extern int simulationBoundX, simulationBoundY;
 extern bool **simulationBoard;
+extern bool **newSimBoard;
 extern long iterationCount;
 // Initalizes the simulation bounds and board
 int initalizeSimulation(int x, int y);
