@@ -92,7 +92,6 @@ void setCursorCell() {
 int main() {
   /*WINDOW *simulationWindow =*/initscr();
   bool simActive = false;
-  printw("Hello");
   cbreak();
   noecho();
   halfdelay(1);
