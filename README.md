@@ -3,4 +3,6 @@ An implementation of [Conway's Game of Life](https://en.wikipedia.org/wiki/Conwa
 
 ## Goals: 
 1. Ncurses based terminal display for selecting the initial starting seed
+    Achieved 12/13/2023
 2. Simulating the game and being able to pause it on any iteration
+    Achieved 12/13/2023
